@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<script>
+//Check for html5 local storage support
+function supports_html5_storage() {
+  try {
+    return 'localStorage' in window && window['localStorage'] !== null;
+  } catch (e) {
+    return false;
+  }
+}
+
+//Trigger on response
+function on_response(data, textStatus, jqXHR) {
+	localStorage.setItem("session", new Array(data));
+}
+
+var session;
+
+if (typeof localStorage.getItem("session") != 'undefined') {
+	session = localStorage.getItem("session");
+} else {
+	localStorage.setItem("session", new Array());
+}
+
+//Update session
+$.ajax({
+	type: "POST",
+	url: "/session.php",
+	data: session,
+	success: on_response,
+	dataType: String
+});
+</script>
+</head>
+
+<body>
+
+</body>
+</html>
